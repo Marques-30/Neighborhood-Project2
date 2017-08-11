@@ -1,63 +1,71 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <title>San Diego</title>
-    <link rel="stylesheet" href="style.css">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
+    <head>
+        <title>San Diego</title>
+        <link rel="stylesheet" href="style.css">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
 
-<body>
-    <div class="container">
-        <div class="options-box">
-            <h1>Explore the Area of San Diego</h1>
-            <hr>
-            <div>
-            <ul id="list">
-                <li><input id="zoo" type="button" value="San Diego Zoo"></li>
-                <li><input id="beach" type="button" value="Ocean Beach Dog Beach"></li>
-                <li><input id="sea" type="button" value="SeaWorld"></li>
-                <li><input id="golf" type="button" value="Riverwalk Golf Club"></li>
-                <li><input id="park" type="button" value="Waterfront Park"></li>
-                <li><input id="house" type="button" value="House"></li>
-            </ul>
-            </div>
-            
-            <div>
-                <span class="text"> Within </span>
-                <select id="max-duration">
+    <body>
+        <div class="container">
+            <div class="options-box">
+                <h1>Explore the Area of San Diego</h1>
+                <hr>
+                <div>
+                    <ul id="list">
+                        <li><input id="zoo" type="button" value="San Diego Zoo"></li>
+                        <li><input id="beach" type="button" value="Ocean Beach Dog Beach"></li>
+                        <li><input id="sea" type="button" value="SeaWorld"></li>
+                        <li><input id="golf" type="button" value="Riverwalk Golf Club"></li>
+                        <li><input id="park" type="button" value="Waterfront Park"></li>
+                        <li><input id="house" type="button" value="House"></li>
+                    </ul>
+                </div>
+                <div class="search" id="search">
+                    <input class="search-box" id="search-box" data-bind="textInput: searchTerm, valueUpdate: 'afterkeydown'" type="button" />
+                </div>
+                <div class="app" id="app">
+                    <div class="list" id="list">
+                        <ul class="results" id="results" data-bind="foreach: filteredList">
+                            <li class="place" id="place" data-bind="text: name, click: bounce"></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="text"> Within </span>
+                        <select id="max-duration">
             <option value="10">10 min</option>
             <option value="15">15 min</option>
             <option value="30">30 min</option>
             <option value="60">1 hour</option>
           </select>
-                <select id="mode">
+                        <select id="mode">
             <option value="DRIVING">drive</option>
             <option value="WALKING">walk</option>
             <option value="BICYCLING">bike</option>
             <option value="TRANSIT">transit ride</option>
           </select>
-                <span class="text">of</span>
-                <input id="search-within-time-text" type="text" placeholder="Ex: Search Tech company or 316 Pennisula Ave, San Diego, CA">
-                <input id="search-within-time" type="button" value="Go">
+                        <span class="text">of</span>
+                        <input id="search-within-time-text" type="text" placeholder="Ex: Search Tech company or 316 Pennisula Ave, San Diego, CA">
+                        <input id="search-within-time" type="button" value="Go">
+                    </div>
+                    <div>
+                        <hr>
+                        <span class="text">Search for nearby places</span>
+                        <input id="places-search" type="text" placeholder="Ex: Cafe spots in San Diego">
+                        <input id="go-places" type="button" value="Go">
+                    </div>
+                    <div>
+                        <p id="data"></p>
+                    </div>
+                </div>
+                <div id="map"></div>
             </div>
-            <div>
-                <hr>
-                <span class="text">Search for nearby places</span>
-                <input id="places-search" type="text" placeholder="Ex: Cafe spots in San Diego">
-                <input id="go-places" type="button" value="Go">
-            </div>
-            <div>
-                <p id="data"></p>
-            </div>
-        </div>
-        <div id="map"></div>
-    </div>
-    <script src="libs/jquery.min.js"></script>
-    <script src="libs/knockout-3.4.0.js"></script>
-    <script src="script.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyCwjWvK__Yb7ZkqTBmGR0tPXTPsomLBYQo&v=3&callback=initMap">
-    </script>
-</body>
+            <script src="libs/jquery.min.js"></script>
+            <script src="libs/knockout-3.4.0.js"></script>
+            <script src="script.js"></script>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyCwjWvK__Yb7ZkqTBmGR0tPXTPsomLBYQo&v=3&callback=initMap" onerror="errorMessage()"></script>
+    </body>
+
 </html>

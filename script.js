@@ -188,17 +188,17 @@ function initMap() {
     // Create a "highlighted location" marker color for when the user
     // mouses over the marker.
     var highlightedIcon = makeMarkerIcon('FFFF24');
-    var appear = function() {
+    var appear = function () {
         populateInfoWindow(this, largeInfowindow);
     };
-    var hover = function() {
+    var hover = function () {
         this.setIcon(highlightedIcon);
     };
-    var end = function() {
+    var end = function () {
         this.setIcon(defaultIcon);
     };
     var animate = google.maps.event.addListener(map, 'idle', function () {
-    marker.setAnimation(google.maps.Animation.BOUNCE);
+        marker.setAnimation(google.maps.Animation.BOUNCE);
     });
     // The following group uses the location array to create an array of markers on initialize.
     for (var i = 0; i < locations.length; i++) {
@@ -237,13 +237,13 @@ function initMap() {
 
     document.getElementById('house').addEventListener('click', houseListings, animate);
 
-    document.getElementById('search-within-time').addEventListener('click', function() {
+    document.getElementById('search-within-time').addEventListener('click', function () {
         searchWithinTime();
     });
 
     // Listen for the event fired when the user selects a prediction from the
     // picklist and retrieve more details for that place.
-    searchBox.addListener('places_changed', function() {
+    searchBox.addListener('places_changed', function () {
         searchBoxPlaces(this);
     });
 
@@ -254,7 +254,7 @@ function initMap() {
     // Add an event listener so that the polygon is captured,  call the
     // searchWithinPolygon function. This will show the markers in the polygon,
     // and hide any outside of it.
-    drawingManager.addListener('overlaycomplete', function(event) {
+    drawingManager.addListener('overlaycomplete', function (event) {
         // First, check if there is an existing polygon.
         // If there is, get rid of it and remove the markers
         if (polygon) {
@@ -290,16 +290,16 @@ function populateInfoWindow(marker, infowindow) {
         infowindow.setContent('');
         infowindow.marker = marker;
         // Make sure the marker property is cleared if the infowindow is closed.
-        infowindow.addListener('closeclick', function() {
+        infowindow.addListener('closeclick', function () {
             infowindow.marker = null;
         });
         var streetViewService = new google.maps.StreetViewService();
         var radius = 50;
-        var getStreetView = function() {};
+        var getStreetView = function () {};
         // In case the status is OK, which means the pano was found, compute the
         // position of the streetview image, then calculate the heading, then get a
         // panorama from that and set the options
-        getStreetView = function(data, status) {
+        getStreetView = function (data, status) {
             if (status == google.maps.StreetViewStatus.OK) {
                 var nearStreetViewLocation = data.location.latLng;
                 var heading = google.maps.geometry.spherical.computeHeading(
@@ -446,7 +446,7 @@ function searchWithinTime() {
             destinations: [destination],
             travelMode: google.maps.TravelMode[mode],
             unitSystem: google.maps.UnitSystem.IMPERIAL,
-        }, function(response, status) {
+        }, function (response, status) {
             if (status !== google.maps.DistanceMatrixStatus.OK) {
                 window.alert('Error was: ' + status);
             } else {
@@ -494,7 +494,7 @@ function displayMarkersWithinTime(response) {
                     // Put this in so that this small window closes if the user clicks
                     // the marker, when the big infowindow opens
                     markers[i].infowindow = infowindow;
-                    google.maps.event.addListener(markers[i], 'click', function() {
+                    google.maps.event.addListener(markers[i], 'click', function () {
                         this.infowindow.close();
                     });
                 }
@@ -523,7 +523,7 @@ function displayDirections(origin) {
         // The destination is user entered address.
         destination: destinationAddress,
         travelMode: google.maps.TravelMode[mode]
-    }, function(response, status) {
+    }, function (response, status) {
         if (status === google.maps.DirectionsStatus.OK) {
             var directionsDisplay = new google.maps.DirectionsRenderer({
                 map: map,
@@ -561,7 +561,7 @@ function textSearchPlaces() {
     placesService.textSearch({
         query: document.getElementById('places-search').value,
         bounds: bounds
-    }, function(results, status) {
+    }, function (results, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             createMarkersForPlaces(results);
         }
@@ -592,7 +592,7 @@ function createMarkersForPlaces(places) {
     // so that only one is open at once.
     var placeInfoWindow = new google.maps.InfoWindow();
     // If a marker is clicked, do a place details search on it in the next function.
-    marker.addListener('click', function() {
+    marker.addListener('click', function () {
         if (placeInfoWindow.marker == this) {
             console.log("This infowindow already is on this marker!");
         } else {
@@ -617,7 +617,7 @@ function getPlacesDetails(marker, infowindow) {
     var service = new google.maps.places.PlacesService(map);
     service.getDetails({
         placeId: marker.id
-    }, function(place, status) {
+    }, function (place, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             infowindow.marker = marker;
             var innerHTML = '<div>';
@@ -641,10 +641,10 @@ function getPlacesDetails(marker, infowindow) {
                     place.opening_hours.weekday_text[6];
             }
             if (place.loadData) {
-              innerHTML += '<br><br><strong>Links:</strong><br>' +
-              places.loadData[0] + '<br>' +
-              places.loadData[1] + '<br>' +
-              places.loadData[2];
+                innerHTML += '<br><br><strong>Links:</strong><br>' +
+                    places.loadData[0] + '<br>' +
+                    places.loadData[1] + '<br>' +
+                    places.loadData[2];
             }
             if (place.photos) {
                 innerHTML += '<br><br><img src="' + place.photos[0].getUrl({
@@ -652,14 +652,125 @@ function getPlacesDetails(marker, infowindow) {
                     maxWidth: 200
                 }) + '">';
             }
-            innerHTML += '</div>';
-            infowindow.setContent(innerHTML);
-            infowindow.open(map, marker);
-            document.getElementById('data').addListener('closeclick', function() {
-                infowindow.marker = null;
-            });
         }
     });
 }
 
-ko.applyBindings(new getPlacesDetails());
+function loadData() {
+
+    var $wikiElem = $('#data');
+
+    // clear out old data before new request
+    $wikiElem.text("");
+
+    // wikipedia
+    var wikiURL = 'http://en.wikipedia.org/w/api.php?action=opensearch&search='+ place + '&format=json&callback=wikiCallback';
+    $wikiHeaderElem.text('Wikipedia Links for ' + place);
+
+    var wikiRequestTimeout = setTimeout(function(){
+        $wikiElem.text("Failed to get wikipedia resources");
+    }, 8000);
+
+    $.ajax({
+        url: wikiURL,
+        dataType: "jsonp",
+        jsonp: "callback",
+        success: function( response ){
+            var articleList = response[1];
+            for (var i = 0; i < articleList.length; i++) {
+                articleStr = articleList[i];
+                var url = 'http://en.wikipedia.org/wiki/' + articleStr;
+                $wikiElem.append('<li><a href="' + url + '">' + articleStr + '</a><li>');
+            }
+            clearTimeout(wikiRequestTimeout);
+        }
+    });
+
+    return false;
+}
+
+$('#data').submit(loadData);
+
+var Location = function (data) {
+    var self = this;
+    this.title = data.title;
+    this.lat = data.lat;
+    this.lng = data.lng;
+    this.opening_hours = data.opening_hours;
+    this.loadData = data.loadData;
+    this.photos = data.photos;
+
+    this.visible = ko.observable(true);
+
+    this.contentString = '<div class="info-window-content"><div class="title"><b>' + data.title + "</b></div>" +
+        '<div class="content">' + self.opening_hours + "</div>" +
+        '<div class="content">' + self.loadData + "</div>" +
+        '<div class="content">' + self.photos + "</div></div>";
+
+    this.infoWindow = new google.maps.InfoWindow({
+        content: self.contentString
+    });
+
+    this.marker = new google.maps.Marker({
+        position: new google.maps.LatLng(data.lat, data.lng),
+        map: map,
+        title: data.title
+    });
+
+    this.showMarker = ko.computed(function () {
+        if (this.visible() === true) {
+            this.marker.setMap(map);
+        } else {
+            this.marker.setMap(null);
+        }
+        return true;
+    }, this);
+
+    this.marker.addListener('click', function () {
+        self.contentString = '<div class="info-window-content"><div class="title"><b>' + data.title + "</b></div>";
+
+        self.infoWindow.setContent(self.contentString);
+
+        self.infoWindow.open(map, this);
+    });
+};
+
+function ViewModel() {
+    var self = this;
+
+    this.searchTerm = ko.observable("");
+
+    this.locationList = ko.observableArray([]);
+
+    Locations.forEach(function (locationItem) {
+        self.locationList.push(new Location(locationItem));
+    });
+
+    this.filteredList = ko.computed(function () {
+        var filter = self.searchTerm().toLowerCase();
+        if (!filter) {
+            self.locationList().forEach(function (locationItem) {
+                locationItem.visible(true);
+            });
+            return self.locationList();
+        } else {
+            return ko.utils.arrayFilter(self.locationList(), function (locationItem) {
+                var string = locationItem.title.toLowerCase();
+                var result = (string.search(filter) >= 0);
+                locationItem.visible(result);
+                return result;
+            });
+        }
+    }, self);
+
+    this.mapElem = document.getElementById('map');
+}
+
+function startApp() {
+    ko.applyBindings(new ViewModel());
+}
+
+function errorMessage() {
+    alert("Knockout binding has failed");
+    document.getElementById("map").style.backgroundColor = "#ffffff";
+}
