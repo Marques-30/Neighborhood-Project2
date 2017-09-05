@@ -24,12 +24,12 @@
                     </ul>
                 </div>
                 <div class="search" id="search">
-                    <input class="search-box" id="search-box" data-bind="textInput: searchTerm, valueUpdate: 'afterkeydown'" type="button" />
+                    <input class="search-box" id="search-box" data-bind="textInput: searchTerm, " type="text" />
                 </div>
                 <div class="app" id="app">
                     <div class="list" id="list">
                         <ul class="results" id="results" data-bind="foreach: filteredList">
-                            <li class="place" id="place" data-bind="text: name, click: bounce"></li>
+                            <li class="place" id="place" data-bind="text: title, click: $root.bounce"></li>
                         </ul>
                     </div>
                     <div>

@@ -3,6 +3,49 @@ var map;
 // Create a new blank array for all the listing markers.
 var markers = [];
 
+var locations = [{
+            title: 'Country Maps',
+            location: {
+                lat: 32.722529,
+                lng: -117.172326
+            }
+        },
+        {
+            title: 'House',
+            location: {
+                lat: 32.760019,
+                lng: -117.125175
+            }
+        },
+        {
+            title: 'Golf Course',
+            location: {
+                lat: 32.763948,
+                lng: -117.176492
+            }
+        },
+        {
+            title: 'Sea World',
+            location: {
+                lat: 32.764720,
+                lng: -117.225249
+            }
+        },
+        {
+            title: 'Ocean Beach',
+            location: {
+                lat: 32.754438,
+                lng: -117.252425
+            }
+        },
+        {
+            title: 'Zoo',
+            location: {
+                lat: 32.733153,
+                lng: -117.149112
+            }
+        }
+    ];
 // This global polygon variable is to ensure only ONE polygon is rendered.
 var polygon = null;
 
@@ -124,49 +167,6 @@ function initMap() {
 
     // These are the real estate listings that will be shown to the user.
     // Normally we'd have these in a database instead.
-    var locations = [{
-            title: 'Country Maps',
-            location: {
-                lat: 32.722529,
-                lng: -117.172326
-            }
-        },
-        {
-            title: 'House',
-            location: {
-                lat: 32.760019,
-                lng: -117.125175
-            }
-        },
-        {
-            title: 'Golf Course',
-            location: {
-                lat: 32.763948,
-                lng: -117.176492
-            }
-        },
-        {
-            title: 'Sea World',
-            location: {
-                lat: 32.764720,
-                lng: -117.225249
-            }
-        },
-        {
-            title: 'Ocean Beach',
-            location: {
-                lat: 32.754438,
-                lng: -117.252425
-            }
-        },
-        {
-            title: 'Zoo',
-            location: {
-                lat: 32.733153,
-                lng: -117.149112
-            }
-        }
-    ];
 
     var largeInfowindow = new google.maps.InfoWindow();
 
@@ -205,6 +205,7 @@ function initMap() {
         // Get the position from the location array.
         var position = locations[i].location;
         var title = locations[i].title;
+        locations[i].marker = marker;
         // Create a marker per location, and put into markers array.
         var marker = new google.maps.Marker({
             position: position,
@@ -222,6 +223,7 @@ function initMap() {
         marker.addListener('mouseover', hover);
         marker.addListener('mouseout', end);
     }
+    ko.applyBindings(new ViewModel());
 
     window.onload = showListings;
 
@@ -272,12 +274,15 @@ function initMap() {
         polygon.getPath().addListener('set_at', searchWithinPolygon);
         polygon.getPath().addListener('insert_at', searchWithinPolygon);
     });
+        
+
 }
 
 function hideMarkers(markers) {
     for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
     }
+    ko.applyBindings(new ViewModel());
 }
 
 // This function populates the infowindow when the marker is clicked. We'll only allow
@@ -726,23 +731,24 @@ var Location = function (data) {
         return true;
     }, this);
 
-    this.marker.addListener('click', function () {
+
+    /*this.marker.addListener('click', function () {
         self.contentString = '<div class="info-window-content"><div class="title"><b>' + data.title + "</b></div>";
 
         self.infoWindow.setContent(self.contentString);
 
         self.infoWindow.open(map, this);
-    });
+    });*/
 };
 
 function ViewModel() {
     var self = this;
 
     this.searchTerm = ko.observable("");
-
+    this.marker=data.marker;
     this.locationList = ko.observableArray([]);
 
-    Locations.forEach(function (locationItem) {
+    locations.forEach(function (locationItem) {
         self.locationList.push(new Location(locationItem));
     });
 
@@ -762,12 +768,11 @@ function ViewModel() {
             });
         }
     }, self);
+    this.bounce = function(location) {
+       google.maps.event.trigger(location.marker,'click');
+     };
 
-    this.mapElem = document.getElementById('map');
-}
-
-function startApp() {
-    ko.applyBindings(new ViewModel());
+    //this.mapElem = document.getElementById('map');
 }
 
 function errorMessage() {
