@@ -4,46 +4,46 @@ var map;
 var markers = [];
 
 var locations = [{
-            title: 'Country Maps',
-            location: {
-                lat: 32.722529,
-                lng: -117.172326
-            }
+        title: 'Country Maps',
+        location: {
+            lat: 32.722529,
+            lng: -117.172326
+        }
         },
-        {
-            title: 'House',
-            location: {
-                lat: 32.760019,
-                lng: -117.125175
-            }
+    {
+        title: 'House',
+        location: {
+            lat: 32.760019,
+            lng: -117.125175
+        }
         },
-        {
-            title: 'Golf Course',
-            location: {
-                lat: 32.763948,
-                lng: -117.176492
-            }
+    {
+        title: 'Golf Course',
+        location: {
+            lat: 32.763948,
+            lng: -117.176492
+        }
         },
-        {
-            title: 'Sea World',
-            location: {
-                lat: 32.764720,
-                lng: -117.225249
-            }
+    {
+        title: 'Sea World',
+        location: {
+            lat: 32.764720,
+            lng: -117.225249
+        }
         },
-        {
-            title: 'Ocean Beach',
-            location: {
-                lat: 32.754438,
-                lng: -117.252425
-            }
+    {
+        title: 'Ocean Beach',
+        location: {
+            lat: 32.754438,
+            lng: -117.252425
+        }
         },
-        {
-            title: 'Zoo',
-            location: {
-                lat: 32.733153,
-                lng: -117.149112
-            }
+    {
+        title: 'Zoo',
+        location: {
+            lat: 32.733153,
+            lng: -117.149112
+        }
         }
     ];
 // This global polygon variable is to ensure only ONE polygon is rendered.
@@ -152,13 +152,13 @@ function initMap() {
     }
 
     // This autocomplete is for use in the search within time entry box.
-    var timeAutocomplete = new google.maps.places.Autocomplete(
-        document.getElementById('search-within-time-text'));
-    // This autocomplete is for use in the geocoder entry box.
-    var zoomAutocomplete = new google.maps.places.Autocomplete(
-        document.getElementById('zoom-to-area-text'));
-    // Bias the boundaries within the map for the zoom to area text.
-    zoomAutocomplete.bindTo('bounds', map);
+    //var timeAutocomplete = new google.maps.places.Autocomplete(
+    //    document.getElementById('search-within-time-text'));
+    //// This autocomplete is for use in the geocoder entry box.
+    //var zoomAutocomplete = new google.maps.places.Autocomplete(
+    //    document.getElementById('zoom-to-area-text'));
+    //// Bias the boundaries within the map for the zoom to area text.
+    //zoomAutocomplete.bindTo('bounds', map);
     // Create a searchbox in order to execute a places search
     var searchBox = new google.maps.places.SearchBox(
         document.getElementById('places-search'));
@@ -169,18 +169,6 @@ function initMap() {
     // Normally we'd have these in a database instead.
 
     var largeInfowindow = new google.maps.InfoWindow();
-
-    // Initialize the drawing manager.
-    var drawingManager = new google.maps.drawing.DrawingManager({
-        drawingMode: google.maps.drawing.OverlayType.POLYGON,
-        drawingControl: true,
-        drawingControlOptions: {
-            position: google.maps.ControlPosition.TOP_LEFT,
-            drawingModes: [
-                google.maps.drawing.OverlayType.POLYGON
-            ]
-        }
-    });
 
     // Style the markers a bit. This will be our listing marker icon.
     var defaultIcon = makeMarkerIcon('0091ff');
@@ -227,18 +215,6 @@ function initMap() {
 
     window.onload = showListings;
 
-    document.getElementById('zoo').addEventListener('click', zooListings, animate);
-
-    document.getElementById('sea').addEventListener('click', seaListings, animate);
-
-    document.getElementById('beach').addEventListener('click', beachListings, animate);
-
-    document.getElementById('golf').addEventListener('click', golfListings, animate);
-
-    document.getElementById('park').addEventListener('click', parkListings, animate);
-
-    document.getElementById('house').addEventListener('click', houseListings, animate);
-
     document.getElementById('search-within-time').addEventListener('click', function () {
         searchWithinTime();
     });
@@ -252,30 +228,6 @@ function initMap() {
     // Listen for the event fired when the user selects a prediction and clicks
     // "go" more details for that place.
     document.getElementById('go-places').addEventListener('click', textSearchPlaces);
-
-    // Add an event listener so that the polygon is captured,  call the
-    // searchWithinPolygon function. This will show the markers in the polygon,
-    // and hide any outside of it.
-    drawingManager.addListener('overlaycomplete', function (event) {
-        // First, check if there is an existing polygon.
-        // If there is, get rid of it and remove the markers
-        if (polygon) {
-            polygon.setMap(null);
-            hideMarkers(markers);
-        }
-        // Switching the drawing mode to the HAND (i.e., no longer drawing).
-        drawingManager.setDrawingMode(null);
-        // Creating a new editable polygon from the overlay.
-        polygon = event.overlay;
-        polygon.setEditable(true);
-        // Searching within the polygon.
-        searchWithinPolygon(polygon);
-        // Make sure the search is re-done if the poly is changed.
-        polygon.getPath().addListener('set_at', searchWithinPolygon);
-        polygon.getPath().addListener('insert_at', searchWithinPolygon);
-    });
-        
-
 }
 
 function hideMarkers(markers) {
@@ -340,72 +292,6 @@ function showListings() {
         markers[i].setMap(map);
         bounds.extend(markers[i].position);
     }
-    map.fitBounds(bounds);
-}
-
-function parkListings() {
-    var bounds = new google.maps.LatLngBounds();
-    // Extend the boundaries of the map for each marker and display the marker
-    var i = 0; {
-        markers[i].setMap(map);
-        bounds.extend(markers[i].position);
-    }
-    google.maps.event.trigger(markers[i], 'click');
-    map.fitBounds(bounds);
-}
-
-function houseListings() {
-    var bounds = new google.maps.LatLngBounds();
-    // Extend the boundaries of the map for each marker and display the marker
-    var i = 1; {
-        markers[i].setMap(map);
-        bounds.extend(markers[i].position);
-    }
-    google.maps.event.trigger(markers[i], 'click');
-    map.fitBounds(bounds);
-}
-
-function zooListings() {
-    var bounds = new google.maps.LatLngBounds();
-    // Extend the boundaries of the map for each marker and display the marker
-    var i = 5; {
-        markers[i].setMap(map);
-        bounds.extend(markers[i].position);
-    }
-    map.fitBounds(bounds);
-    google.maps.event.trigger(markers[i], 'click');
-}
-
-function beachListings() {
-    var bounds = new google.maps.LatLngBounds();
-    // Extend the boundaries of the map for each marker and display the marker
-    var i = 4; {
-        markers[i].setMap(map);
-        bounds.extend(markers[i].position);
-    }
-    google.maps.event.trigger(markers[i], 'click');
-    map.fitBounds(bounds);
-}
-
-function golfListings() {
-    var bounds = new google.maps.LatLngBounds();
-    // Extend the boundaries of the map for each marker and display the marker
-    var i = 2; {
-        markers[i].setMap(map);
-        bounds.extend(markers[i].position);
-    }
-    google.maps.event.trigger(markers[i], 'click');
-    map.fitBounds(bounds);
-}
-
-function seaListings() {
-    var bounds = new google.maps.LatLngBounds();
-    // Extend the boundaries of the map for each marker and display the marker
-    var i = 3; {
-        markers[i].setMap(map);
-        bounds.extend(markers[i].position);
-    }
-    google.maps.event.trigger(markers[i], 'click');
     map.fitBounds(bounds);
 }
 
@@ -664,15 +550,15 @@ function getPlacesDetails(marker, infowindow) {
 function loadData() {
 
     var $wikiElem = $('#data');
-
+    place = 'San Diego';
     // clear out old data before new request
     $wikiElem.text("");
 
     // wikipedia
-    var wikiURL = 'http://en.wikipedia.org/w/api.php?action=opensearch&search='+ place + '&format=json&callback=wikiCallback';
+    var wikiURL = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + place + '&format=json&callback=wikiCallback';
     $wikiHeaderElem.text('Wikipedia Links for ' + place);
 
-    var wikiRequestTimeout = setTimeout(function(){
+    var wikiRequestTimeout = setTimeout(function () {
         $wikiElem.text("Failed to get wikipedia resources");
     }, 8000);
 
@@ -680,7 +566,7 @@ function loadData() {
         url: wikiURL,
         dataType: "jsonp",
         jsonp: "callback",
-        success: function( response ){
+        success: function (response) {
             var articleList = response[1];
             for (var i = 0; i < articleList.length; i++) {
                 articleStr = articleList[i];
@@ -731,7 +617,9 @@ var Location = function (data) {
         return true;
     }, this);
 
-
+    this.bounce = function (location) {
+        google.maps.event.trigger(location.marker, 'click');
+    };
     /*this.marker.addListener('click', function () {
         self.contentString = '<div class="info-window-content"><div class="title"><b>' + data.title + "</b></div>";
 
@@ -745,7 +633,7 @@ function ViewModel() {
     var self = this;
 
     this.searchTerm = ko.observable("");
-    this.marker=data.marker;
+    this.marker = data.marker;
     this.locationList = ko.observableArray([]);
 
     locations.forEach(function (locationItem) {
@@ -768,9 +656,6 @@ function ViewModel() {
             });
         }
     }, self);
-    this.bounce = function(location) {
-       google.maps.event.trigger(location.marker,'click');
-     };
 
     //this.mapElem = document.getElementById('map');
 }

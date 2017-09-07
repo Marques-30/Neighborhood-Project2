@@ -13,23 +13,13 @@
             <div class="options-box">
                 <h1>Explore the Area of San Diego</h1>
                 <hr>
-                <div>
-                    <ul id="list">
-                        <li><input id="zoo" type="button" value="San Diego Zoo"></li>
-                        <li><input id="beach" type="button" value="Ocean Beach Dog Beach"></li>
-                        <li><input id="sea" type="button" value="SeaWorld"></li>
-                        <li><input id="golf" type="button" value="Riverwalk Golf Club"></li>
-                        <li><input id="park" type="button" value="Waterfront Park"></li>
-                        <li><input id="house" type="button" value="House"></li>
-                    </ul>
-                </div>
                 <div class="search" id="search">
-                    <input class="search-box" id="search-box" data-bind="textInput: searchTerm, " type="text" />
+                    <input class="search-box" id="search-box" data-bind="textInput: searchTerm " type="text" />
                 </div>
                 <div class="app" id="app">
                     <div class="list" id="list">
                         <ul class="results" id="results" data-bind="foreach: filteredList">
-                            <li class="place" id="place" data-bind="text: title, click: $root.bounce"></li>
+                            <button class="place" id="place"><li class="place" id="place" data-bind="text: title, click: $root.bounce"></li></button>
                         </ul>
                     </div>
                     <div>
@@ -65,7 +55,7 @@
             <script src="libs/jquery.min.js"></script>
             <script src="libs/knockout-3.4.0.js"></script>
             <script src="script.js"></script>
-            <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyCwjWvK__Yb7ZkqTBmGR0tPXTPsomLBYQo&v=3&callback=initMap" onerror="errorMessage()"></script>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCwjWvK__Yb7ZkqTBmGR0tPXTPsomLBYQo&v=3&callback=initMap" onerror="errorMessage()"></script>
     </body>
 
 </html>
