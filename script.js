@@ -212,8 +212,18 @@ function initMap() {
         marker.addListener('mouseout', end);
     }
     ko.applyBindings(new ViewModel());
-
-    window.onload = showListings;
+    
+    window.onload=function(){
+        showListings();
+        wikiload();
+    }
+    
+    document.getElementById('zoo').addEventListener('click', zooListings, animate);
+    document.getElementById('sea').addEventListener('click', seaListings, animate);
+    document.getElementById('beach').addEventListener('click', beachListings, animate);
+    document.getElementById('golf').addEventListener('click', golfListings, animate);
+    document.getElementById('park').addEventListener('click', parkListings, animate);
+    document.getElementById('house').addEventListener('click', houseListings, animate);
 
     document.getElementById('search-within-time').addEventListener('click', function () {
         searchWithinTime();
@@ -294,7 +304,66 @@ function showListings() {
     }
     map.fitBounds(bounds);
 }
-
+function parkListings() {
+    var bounds = new google.maps.LatLngBounds();
+    // Extend the boundaries of the map for each marker and display the marker
+    var i = 0; {
+        markers[i].setMap(map);
+        bounds.extend(markers[i].position);
+    }
+    google.maps.event.trigger(markers[i], 'click');
+    map.fitBounds(bounds);
+}
+function houseListings() {
+    var bounds = new google.maps.LatLngBounds();
+    // Extend the boundaries of the map for each marker and display the marker
+    var i = 1; {
+        markers[i].setMap(map);
+        bounds.extend(markers[i].position);
+    }
+    google.maps.event.trigger(markers[i], 'click');
+    map.fitBounds(bounds);
+}
+function zooListings() {
+    var bounds = new google.maps.LatLngBounds();
+    // Extend the boundaries of the map for each marker and display the marker
+    var i = 5; {
+        markers[i].setMap(map);
+        bounds.extend(markers[i].position);
+    }
+    map.fitBounds(bounds);
+    google.maps.event.trigger(markers[i], 'click');
+}
+function beachListings() {
+    var bounds = new google.maps.LatLngBounds();
+    // Extend the boundaries of the map for each marker and display the marker
+    var i = 4; {
+        markers[i].setMap(map);
+        bounds.extend(markers[i].position);
+    }
+    google.maps.event.trigger(markers[i], 'click');
+    map.fitBounds(bounds);
+}
+function golfListings() {
+    var bounds = new google.maps.LatLngBounds();
+    // Extend the boundaries of the map for each marker and display the marker
+    var i = 2; {
+        markers[i].setMap(map);
+        bounds.extend(markers[i].position);
+    }
+    google.maps.event.trigger(markers[i], 'click');
+    map.fitBounds(bounds);
+}
+function seaListings() {
+    var bounds = new google.maps.LatLngBounds();
+    // Extend the boundaries of the map for each marker and display the marker
+    var i = 3; {
+        markers[i].setMap(map);
+        bounds.extend(markers[i].position);
+    }
+    google.maps.event.trigger(markers[i], 'click');
+    map.fitBounds(bounds);
+}
 // This function takes in a COLOR, and then creates a new marker
 // icon of that color. The icon will be 21 px wide by 34 high, have an origin
 // of 0, 0 and be anchored at 10, 34).
@@ -547,7 +616,7 @@ function getPlacesDetails(marker, infowindow) {
     });
 }
 
-function loadData() {
+function wikiload() {
 
     var $wikiElem = $('#data');
     place = 'San Diego';
@@ -556,7 +625,6 @@ function loadData() {
 
     // wikipedia
     var wikiURL = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + place + '&format=json&callback=wikiCallback';
-    $wikiHeaderElem.text('Wikipedia Links for ' + place);
 
     var wikiRequestTimeout = setTimeout(function () {
         $wikiElem.text("Failed to get wikipedia resources");
@@ -580,7 +648,7 @@ function loadData() {
     return false;
 }
 
-$('#data').submit(loadData);
+$('#data').submit(wikiload);
 
 var Location = function (data) {
     var self = this;
