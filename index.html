@@ -13,18 +13,8 @@
         <div class="options-box">
             <h1>Explore the Area of San Diego</h1>
             <hr>
-            <div>
-                <ul id="list">
-                    <li><input id="zoo" type="button" value="San Diego Zoo"></li>
-                    <li><input id="beach" type="button" value="Ocean Beach Dog Beach"></li>
-                    <li><input id="sea" type="button" value="SeaWorld"></li>
-                    <li><input id="golf" type="button" value="Riverwalk Golf Club"></li>
-                    <li><input id="park" type="button" value="Waterfront Park"></li>
-                    <li><input id="house" type="button" value="House"></li>
-                </ul>
-            </div>
             <div class="search" id="search">
-                <input class="search-box" id="search-box" data-bind="textInput: searchTerm " type="text" />
+                <input class="search-box" id="search-box" data-bind="textInput: searchTerm, valueUpdate: 'afterkeydown'" type="button" />
             </div>
             <div class="app" id="app">
                 <div class="list" id="list">

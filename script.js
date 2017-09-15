@@ -244,7 +244,7 @@ function hideMarkers(markers) {
     for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
     }
-    ko.applyBindings(new ViewModel());
+
 }
 
 // This function populates the infowindow when the marker is clicked. We'll only allow
